@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>منصة سجلي الأكاديمي | حاسبة المعدل</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🎓%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg:#eef1f5;--fg:#16202b;--panel:#ffffff;--bd:#cfd6df;--muted:#52606f;--accent:#0277bd;--inbg:#f7f9fb;--arrow:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'><path d='M1 1.5l6 6 6-6' fill='none' stroke='%2352606f' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){--bg:#10161d;--fg:#e8edf2;--panel:#1a222c;--bd:#33404e;--muted:#9fb0c0;--accent:#4fc3f7;--inbg:#121a22;--arrow:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'><path d='M1 1.5l6 6 6-6' fill='none' stroke='%239fb0c0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>");color-scheme:dark}
+}
+:root[data-theme="dark"]{--bg:#10161d;--fg:#e8edf2;--panel:#1a222c;--bd:#33404e;--muted:#9fb0c0;--accent:#4fc3f7;--inbg:#121a22;--arrow:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'><path d='M1 1.5l6 6 6-6' fill='none' stroke='%239fb0c0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>");color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*:before,*:after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:'Amiri','FreeSerif','Times New Roman',serif;font-size:18px;font-weight:700;line-height:1.5}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:10}
+.wrap{max-width:860px;margin:0 auto;padding:14px 12px 40px}
+h2.title{margin:6px 0 12px;font-size:26px;text-align:center}
+.ui{background:var(--panel);border:1.5px solid var(--bd);border-radius:16px;padding:14px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.ui label{display:block;font-size:15px;color:var(--muted);margin:8px 0 4px}
+.ui input,.ui select{width:100%;font:inherit;font-size:18px;padding:10px 12px;border-radius:12px;border:1.5px solid var(--bd);background:var(--inbg);color:var(--fg)}
+.ui input{min-height:48px}
+.ui select{appearance:none;-webkit-appearance:none;-moz-appearance:none;cursor:pointer;min-height:48px;font-size:17px;padding:11px 14px 11px 42px;background-image:var(--arrow);background-repeat:no-repeat;background-position:left 15px center;background-size:14px 9px;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;transition:border-color .15s,box-shadow .15s}
+.ui select:hover{border-color:var(--accent)}
+.ui input:focus,.ui select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 25%,transparent)}
+.ui select:disabled{opacity:.6;cursor:not-allowed}
+.ui select option,.ui select optgroup{background:var(--panel);color:var(--fg);font-family:inherit}
+.ui select optgroup{font-style:normal;font-weight:700;color:var(--accent)}
+.ui select option{font-weight:400}
+.hdr{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px}.hdr h4{margin:0}
+.btn.danger{background:transparent;color:#d32f2f;border:1.5px solid #d32f2f;display:inline-flex;align-items:center;gap:6px}
+html{scroll-behavior:smooth}
+.btn,.ui select{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.btn{box-shadow:0 1px 2px rgba(0,0,0,.12);transition:transform .12s ease,box-shadow .2s ease,background-color .2s ease,border-color .2s ease,filter .2s ease}
+.btn:hover{filter:brightness(1.07);box-shadow:0 4px 12px rgba(0,0,0,.16)}
+.btn:active{transform:translateY(1px) scale(.98);box-shadow:none}
+.btn.alt:hover{filter:none;border-color:var(--accent)}
+.btn.danger:hover{filter:none;background:rgba(211,47,47,.1)}
+.btn:focus-visible,.x:focus-visible{outline:3px solid color-mix(in srgb,var(--accent) 45%,transparent);outline-offset:2px}
+.ui{transition:box-shadow .25s ease,border-color .25s ease}
+.ui:focus-within{border-color:color-mix(in srgb,var(--accent) 55%,var(--bd));box-shadow:0 6px 18px rgba(0,0,0,.1)}
+.ui label{font-weight:700;letter-spacing:.2px}
+.ui select{padding-left:46px;border-radius:12px;box-shadow:inset 0 1px 2px rgba(0,0,0,.06)}
+.ui select:focus{background-color:var(--panel)}
+.ui select option{padding:10px 12px}
+.ui select option:checked{background:color-mix(in srgb,var(--accent) 18%,var(--panel))}
+.ui select optgroup{font-size:15px}
+.cgrp{box-shadow:0 1px 3px rgba(0,0,0,.06);transition:border-color .2s ease}
+.cgrp:focus-within{border-color:var(--accent)}
+.crow .x{border-radius:10px;transition:background-color .15s ease}
+.crow .x:hover{background:rgba(183,28,28,.12)}
+.sheet td{transition:background-color .15s ease}
+@media(hover:hover){.sheet tr:not(.t):hover td{background:#eaf3fb}}
+@media(prefers-color-scheme:dark){.ui .x{color:#ef9a9a}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:560px){.grid2{grid-template-columns:1fr}}
+.btn{font:inherit;font-size:18px;border:0;border-radius:12px;padding:11px 18px;cursor:pointer;color:#fff;background:var(--accent);min-height:44px}
+.btn.alt{background:transparent;color:var(--fg);border:1.5px solid var(--bd)}
+.btn.pdf{background:#2e7d32}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.live{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.live div{background:var(--inbg);border:1.5px solid var(--bd);border-radius:12px;padding:8px;text-align:center;font-size:14px;color:var(--muted)}
+.live b{display:block;font-size:24px;color:var(--fg)}
+.msg{margin-top:8px;font-size:15px;color:var(--muted);min-height:22px}
+.sheet{background:#fff;color:#111;border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.12);position:relative;font-weight:700}
+.sheet *{letter-spacing:0}
+.hero{background:linear-gradient(135deg,#263238,#0277bd);color:#fff;border-radius:14px;padding:18px;text-align:center}
+.hero h1{margin:6px 0;font-size:32px}.hero .sm{font-size:15px}.hero .nm{font-size:23px;background:rgba(255,255,255,.2);display:inline-block;padding:4px 20px;border-radius:30px;margin:6px 0}.hero .sm2{font-size:14px;margin-top:4px}
+.kpis{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0}
+.kpi{flex:1 1 150px;border:2px solid;border-radius:12px;padding:8px;text-align:center;background:#fafbfc}
+.kpi b{display:block;font-size:28px}.kpi small{font-size:14px;color:#777}.kpi span{font-size:14px;color:#333}
+.pg{height:6px;background:#dde3ea;border-radius:4px;margin-top:6px;overflow:hidden}.pg div{height:100%;background:#263238}
+.row2{display:flex;flex-wrap:wrap;gap:10px}.row2 .card{flex:1 1 260px}
+.card{border:1px solid #d5dbe3;border-radius:12px;padding:12px;margin-bottom:10px}
+.card h4{margin:0 0 8px;font-size:18px;color:#1f3a5f}
+.chart{display:flex;align-items:flex-end;gap:6px;height:190px;border-bottom:2px solid #bbb;margin-bottom:24px}
+.bc{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;position:relative;height:100%}
+.bar{width:70%;border-radius:5px 5px 0 0;min-height:2px}.bv{font-size:13px;margin-bottom:2px}.bl{position:absolute;bottom:-22px;font-size:14px;color:#333}
+.dr{display:flex;align-items:center;gap:8px;margin:7px 0;font-size:16px}.dn{width:76px}.dt{flex:1;height:12px;background:#eef1f5;border-radius:6px;overflow:hidden}.dt div{height:100%;border-radius:6px}
+table{width:100%;border-collapse:collapse;font-size:17px;border:1.5px solid #cfd6df;border-radius:10px;overflow:hidden}
+th{color:#fff;padding:7px 6px;font-size:16px}td{padding:5px 6px;text-align:center;border-bottom:1px solid #e3e7ee}
+td.m{text-align:right;font-size:18px}th.n,td.n{width:34px;color:#777}th.u{width:70px}th.g{width:130px}
+tr.alt td{background:#f4f7fb}tr.t td{font-weight:700;border-bottom:none}
+td b.u{display:inline-block;min-width:30px;background:#eef2f7;border-radius:50%;padding:2px 0}
+table.sum th{background:#263238}
+.bd{display:inline-block;border:1.5px solid;border-radius:20px;padding:1px 12px;font-size:16px}
+.blank{display:inline-block;width:96px;height:22px;border:1.5px dashed #aab4c2;border-radius:6px;background:#fbfcfd;vertical-align:middle}
+.x{background:none;border:0;color:#b71c1c;font:inherit;font-size:16px;cursor:pointer;padding:0 4px}
+.pend{color:#555;font-size:16px}
+.note{font-size:14.5px;color:#333;background:#f4f6f9;border-radius:10px;padding:10px;line-height:1.7}
+.ph{display:flex;border:2px solid;border-radius:16px;overflow:hidden;margin-bottom:6px}
+.pn{color:#fff;width:112px;text-align:center;padding:12px 6px}.pn small{display:block;font-size:15px}.pn b{font-size:28px}
+.pi{flex:1;padding:12px 16px}.pt{font-size:22px;margin-bottom:6px}
+.chips span{display:inline-block;border:1.5px solid;border-radius:20px;padding:1px 12px;margin-left:8px;margin-bottom:4px;font-size:15px;background:#fff}
+.sh{display:flex;justify-content:space-between;align-items:center;border-right:5px solid;padding:0 10px;margin:12px 0 6px;gap:6px;flex-wrap:wrap}
+.sh h3{margin:0;font-size:20px}.sh small{color:#777}.sa{font-size:15px;color:#333;background:#f1f3f6;padding:2px 10px;border-radius:14px}
+.fin{border:2.5px solid;border-radius:14px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px}
+.fl{font-size:21px}.fs{font-size:14.5px;color:#333;margin-top:2px}
+.fv{display:flex;align-items:center;gap:12px}.fv b{font-size:36px}.fv .bd{font-size:17px;padding:3px 16px}
+.fv i{display:inline-block;width:80px;border-bottom:2px solid #444;height:26px}.pc{font-size:22px}
+[hidden]{display:none!important}
+.dd{position:relative}
+.dd-native{position:absolute!important;inset:0;width:100%;height:100%;opacity:0;pointer-events:none}
+.dd-btn{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:48px;padding:10px 14px;font:inherit;font-size:17px;color:var(--fg);background:var(--inbg);border:1.5px solid var(--bd);border-radius:12px;cursor:pointer;text-align:right;box-shadow:inset 0 1px 2px rgba(0,0,0,.06);transition:border-color .15s,box-shadow .15s,background-color .15s;-webkit-tap-highlight-color:transparent}
+.dd-btn:hover{border-color:var(--accent)}
+.dd-btn:focus-visible,.dd.open .dd-btn{outline:none;border-color:var(--accent);background:var(--panel);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 25%,transparent)}
+.dd-btn:disabled{opacity:.6;cursor:not-allowed}
+.dd-chev{width:14px;height:9px;flex:none;color:var(--muted);transition:transform .2s ease,color .2s ease}
+.dd.open .dd-chev{transform:rotate(180deg);color:var(--accent)}
+.dd-lbl{display:flex;align-items:center;gap:8px;min-width:0;flex:1}
+.dd-panel{position:absolute;z-index:30;top:calc(100% + 6px);right:0;left:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;background:var(--panel);border:1.5px solid var(--bd);border-radius:14px;padding:6px;box-shadow:0 14px 34px rgba(0,0,0,.22);animation:ddin .14s ease-out}
+.dd.up .dd-panel{top:auto;bottom:calc(100% + 6px);animation-name:ddup}
+@keyframes ddin{from{opacity:0;transform:translateY(-6px) scale(.98)}to{opacity:1;transform:none}}
+@keyframes ddup{from{opacity:0;transform:translateY(6px) scale(.98)}to{opacity:1;transform:none}}
+.dd-grp{position:sticky;top:-6px;z-index:1;margin:4px -6px 2px;padding:7px 14px;font-size:14.5px;color:var(--accent);background:var(--inbg);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd)}
+.dd-grp:first-child{margin-top:-6px;border-top:0}
+.dd-opt{display:flex;align-items:center;gap:8px;min-height:46px;padding:8px 12px;border-radius:10px;cursor:pointer;font-size:17px;border-inline-start:3px solid transparent;transition:background-color .12s ease}
+.dd-opt:hover,.dd-opt.act{background:color-mix(in srgb,var(--accent) 12%,transparent)}
+.dd-opt.sel{background:color-mix(in srgb,var(--accent) 20%,transparent);color:var(--accent);border-inline-start-color:var(--accent)}
+.o-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dd-opt .o-name{white-space:normal;overflow:visible}
+.o-dot{width:10px;height:10px;border-radius:50%;flex:none}
+.o-mk{width:20px;height:20px;border-radius:50%;flex:none;display:inline-flex;align-items:center;justify-content:center;font-size:13px;line-height:1;border:1.5px solid var(--bd)}
+.o-mk.done{background:#0f9d58;border-color:#0f9d58;color:#fff}
+.o-pill{flex:none;font-size:13.5px;padding:1px 10px;border-radius:20px;background:color-mix(in srgb,var(--fg) 8%,transparent);color:var(--muted)}
+.o-pill.rng{direction:ltr;unicode-bidi:isolate}
+.brand{display:flex;align-items:center;justify-content:center;gap:12px;margin:4px 0 10px}
+.brand .lg{width:50px;height:50px;border-radius:15px;display:flex;align-items:center;justify-content:center;color:#fff;background:linear-gradient(135deg,#01579b,#0288d1);box-shadow:0 4px 14px rgba(2,119,189,.35)}
+.brand .tx b{display:block;font-size:26px;line-height:1.2}
+.brand .tx small{display:block;font-size:14px;color:var(--muted)}
+#report .sheet{width:794px;padding:40px;margin-left:auto;margin-right:auto}
+#report .x{position:relative}
+#report .x::after{content:"";position:absolute;top:0;bottom:0;left:calc(-18px/var(--z,1));right:calc(-18px/var(--z,1))}
+.ui h4{margin:0 0 6px;font-size:20px}
+.hint{font-size:14.5px;color:var(--muted);margin-top:6px;line-height:1.6}
+.crow{display:grid;grid-template-columns:1fr 84px 40px;gap:6px;margin-bottom:6px}
+.cgrp{border:1.5px solid var(--bd);border-radius:12px;padding:10px;margin-top:10px;background:var(--inbg)}
+.cgrp b{display:block;margin-bottom:6px;font-size:17px}
+.btn.sm{padding:6px 14px;font-size:16px;min-height:38px}
+.pdfhost{position:fixed;left:-20000px;top:0;width:794px}
+.pdfpage{width:794px;height:1123px;margin:0;border-radius:0;box-shadow:none;padding:40px;overflow:hidden}
+.pdfpage .fin{position:absolute;bottom:40px;left:40px;right:40px;margin:0}
+.pdfpage .x,.pdfpage .noexp{display:none}
+@media print{
+  @page{size:A4;margin:0}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body{background:#fff}body::before{display:none}
+  .ui,.title,.brand{display:none}
+  .wrap{padding:0;max-width:none}
+  .sheet{width:210mm;min-height:297mm;border-radius:0;box-shadow:none;margin:0;page-break-after:always;padding:12mm}
+  .x,.noexp{display:none}
+  .pdfhost{display:none}
+  #report{zoom:1!important}
+  #report .sheet{width:210mm!important;padding:12mm!important;margin:0!important}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand"><div class="lg"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg></div><div class="tx"><b>منصة سجلي الأكاديمي</b></div></div>
+  
+
+  <div class="ui">
+    <div class="hdr"><h4>بيانات الطالب</h4><button class="btn danger sm" id="rstu" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m7 21-4.3-4.3c-1-1-1-2.5 0-3.4l9.6-9.6c1-1 2.5-1 3.4 0l5.6 5.6c1 1 1 2.5 0 3.4L13 21"/><path d="M22 21H7"/><path d="m5 11 9 9"/></svg><span>مسح بيانات الطالب</span></button></div>
+    <label for="nm">اسم الطالب</label>
+    <input id="nm" type="text" placeholder="اكتب اسمك" autocomplete="off">
+    <label for="uni">الجامعة</label>
+    <input id="uni" type="text" placeholder="اكتب اسم جامعتك" autocomplete="off">
+    <div class="grid2">
+      <div><label for="col">الكلية</label><input id="col" type="text" placeholder="اكتب اسم كليتك" autocomplete="off"></div>
+      <div><label for="dep">القسم</label><input id="dep" type="text" placeholder="اكتب اسم قسمك" autocomplete="off"></div>
+    </div>
+    <label for="study">نوع الدراسة</label>
+    <select id="study">
+      <option value="">— اختر —</option>
+      <option value="صباحي">الدراسة الصباحية</option>
+      <option value="مسائي">الدراسة المسائية</option>
+    </select>
+  </div>
+
+  <div class="ui">
+    <h4>المنهج وطريقة الحساب</h4>
+    <label for="mode">المنهج الأكاديمي</label>
+    <select id="mode">
+      <option value="default">كربلاء · هندسة الكهرباء والإلكترونيك (افتراضي)</option>
+      <option value="custom">منهج مخصص (أدخل المواد بنفسي)</option>
+    </select>
+    <label for="method">طريقة حساب المعدل</label>
+    <select id="method">
+      <option value="bologna">نظام بولونيا</option>
+      <option value="courses">نظام الكورسات الاعتيادي</option>
+      <option value="semester">النظام الفصلي</option>
+    </select>
+    <div class="hint" id="mhint"></div>
+  </div>
+
+  <div class="ui" id="custbox" hidden></div>
+
+  <div class="ui">
+    <h4>إدخال التقديرات</h4>
+    <div class="grid2">
+      <div><label for="sub">القائمة الأولى: المادة</label><select id="sub"></select></div>
+      <div><label for="grd">القائمة الثانية: التقدير</label>
+        <select id="grd">
+          <option value="امتياز">امتياز (90 - 100)</option>
+          <option value="جيد جداً">جيد جداً (80 - 89)</option>
+          <option value="جيد">جيد (70 - 79)</option>
+          <option value="متوسط">متوسط (60 - 69)</option>
+          <option value="مقبول">مقبول (50 - 59)</option>
+        </select></div>
+    </div>
+    <label for="num">الدرجة الرقمية (اختياري، إذا أدخلتها تُستخدم بدل منتصف التقدير)</label>
+    <input id="num" type="number" inputmode="decimal" min="50" max="100" placeholder="مثال: 83">
+    <div class="btns">
+      <button class="btn" id="add">تسجيل التقدير</button>
+      <button class="btn pdf" id="pdf">تحميل PDF</button>
+      <button class="btn alt" id="clr">مسح كل التقديرات</button>
+    </div>
+    <div class="live" id="live"></div>
+    <div class="msg" id="msg"></div>
+  </div>
+
+  <div id="report"></div>
+</div>
+<div class="pdfhost" id="host"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+(function(){
+"use strict";
+var ORD=["الأول","الثاني","الثالث"];
+var STN=["الأولى","الثانية","الثالثة","الرابعة","الخامسة","السادسة"];
+var COL=["#0277bd","#2e7d32","#ef6c00","#455a64","#6d4c41","#00838f"];
+var LIGHT=["#e1f1fb","#e6f4e7","#fff1e0","#eceff1","#efebe9","#e0f7fa"];
+var PCT={"امتياز":95,"جيد جداً":85,"جيد":75,"متوسط":65,"مقبول":55};
+var BADGE={"امتياز":["#0f9d58","#e6f6ec"],"جيد جداً":["#1a73e8","#e8f0fe"],"جيد":["#00897b","#e0f4f1"],"متوسط":["#f29900","#fff4e0"],"مقبول":["#d93025","#fdecea"]};
+var GR=["امتياز","جيد جداً","جيد","متوسط","مقبول"];
+var MNAME={bologna:"نظام بولونيا",courses:"نظام الكورسات الاعتيادي",semester:"النظام الفصلي"};
+var MHINT={
+ bologna:"كل المعدلات (الفصل والسنة والتراكمي) = مجموع (الدرجة × الوحدات) ÷ مجموع الوحدات.",
+ courses:"معدل الكورس مرجّح بوحدات مواده. المعدل السنوي = متوسط معدلات كورسات المرحلة. المعدل التراكمي = متوسط المعدلات السنوية.",
+ semester:"معدل الفصل مرجّح بوحدات مواده. المعدل السنوي = متوسط معدلات فصول المرحلة. المعدل التراكمي = مجموع (الدرجة × الوحدات) ÷ مجموع الوحدات لكل الفصول."
+};
+var DEF=[
+ [["الرياضيات I",6],["الرسم الهندسي",5],["الفيزياء الكهربائية",7],["علم الحاسوب",3],["الفيزياء الميكانيكية",7],["اللغة العربية",2]],
+ [["الانجليزية الأكاديمية",2],["الرياضيات II",6],["تحليل دوائر التيار المتناوب",7],["فيزياء الألكترونيات",6],["التقنيات الرقمية",7],["حقوق الأنسان و الديمقراطية",2]],
+ [["الشبكات الكهربائية",5],["الرياضيات III",6],["مكائن التيار المستمر",5],["المجالات الكهرومغناطيسية",5],["برمجة الحاسوب",4],["أوتوكاد التصاميم الكهربائية",3],["جرائم نظام البعث في العراق",2]],
+ [["شبكات الحاسوب",5],["التحليلات العددية والأحصاء",5],["البرمجة كائنية التوجه",5],["المحولات الكهربائية",5],["الدوائر الإلكترونية",6],["الانجليزية الأكاديمية II",2],["اللغة العربية II",2]],
+ [["المكائن الحثية",6],["المعالجات الدقيقة",5],["الأجهزة والدوائر الإلكترونية",6],["هندسة القدرة الكهربائية",5],["التحليلات الهندسية",5],["أجهزة القياسات",3]],
+ [["المكائن التزامنية",6],["تصميم الأنظمة الرقمية",6],["تصميم الأنظمة المدمجة",5],["الاتصالات التماثلية",7],["الهوائيات والانتشار",6]],
+ [["مشروع هندسي",4],["الكترونيك القدرة",6],["الاتصالات الرقمية",6],["السيطرة الحديثة",6],["الطاقات المتجددة",4],["الذكاء الاصطناعي",4]],
+ [["مشروع هندسي",4],["تحليلات نظم القدرة الكهربائية",8],["الادارة الهندسية",3],["معالجة الاشارة الرقمية",8],["أخلاقيات المهنة",2],["نظرية المعلومات والترميز",5]]
+];
+var MAXSUB=12;
+var state=fresh();
+function fresh(){return {info:{name:"",uni:"",col:"",dep:"",study:""},mode:"default",method:"bologna",gd:{},gc:{},cust:{stages:3,per:2,subs:[],next:1}};}
+function save(){try{localStorage.setItem("acadrec_v3",JSON.stringify(state));}catch(e){}}
+function load(){var raw=null;try{raw=localStorage.getItem("acadrec_v3");}catch(e){}
+  if(!raw)return;try{var o=JSON.parse(raw),d=fresh();
+    state={info:Object.assign(d.info,o.info||{}),mode:o.mode==="custom"?"custom":"default",method:MNAME[o.method]?o.method:"bologna",gd:o.gd||{},gc:o.gc||{},cust:Object.assign(d.cust,o.cust||{})};
+  }catch(e){state=fresh();}}
+var CUR={per:2,stages:4,subs:[],total:0,semCount:8};
+function build(){
+  var subs=[];
+  if(state.mode==="default"){
+    CUR.per=2;CUR.stages=4;
+    DEF.forEach(function(s,i){s.forEach(function(r,j){subs.push({id:(i+1)+"-"+j,sem:i+1,st:Math.ceil((i+1)/2),name:r[0],units:r[1]});});});
+  }else{
+    CUR.per=state.cust.per;CUR.stages=state.cust.stages;
+    state.cust.subs.forEach(function(s){if(s.sem<=CUR.stages*CUR.per)subs.push({id:"c"+s.uid,sem:s.sem,st:Math.ceil(s.sem/CUR.per),name:(s.name||"").trim()||"مادة بلا اسم",units:Math.max(0,parseFloat(s.units)||0)});});
+    subs=subs.map(function(s,i){s.o=i;return s;}).sort(function(a,b){return a.sem-b.sem||a.o-b.o;});
+  }
+  CUR.subs=subs;CUR.semCount=CUR.stages*CUR.per;
+  CUR.total=subs.reduce(function(a,s){return a+s.units;},0);
+}
+function G(){return state.mode==="default"?state.gd:state.gc;}
+function letter(p){return p>=90?"امتياز":p>=80?"جيد جداً":p>=70?"جيد":p>=60?"متوسط":"مقبول";}
+function pct(id){var x=G()[id];if(!x)return null;return x.m!=null?x.m:PCT[x.g];}
+function gradeOf(id){var x=G()[id];if(!x)return "";return x.m!=null?letter(x.m):x.g;}
+function f1(x){return x.toFixed(1);}
+function mean(a){return a.length?a.reduce(function(s,v){return s+v;},0)/a.length:null;}
+function bySem(sem){return CUR.subs.filter(function(s){return s.sem===sem;});}
+function byStage(st){return CUR.subs.filter(function(s){return s.st===st;});}
+function upTo(st){return CUR.subs.filter(function(s){return s.st<=st;});}
+function base(list){var u=0,w=0,n=0;list.forEach(function(s){var p=pct(s.id);if(p!=null&&s.units>0){u+=s.units;w+=s.units*p;n++;}else if(p!=null){n++;}});
+  return {units:u,avg:u?w/u:null,n:n,total:list.length,totalUnits:list.reduce(function(a,s){return a+s.units;},0)};}
+function semInfo(sem){return base(bySem(sem));}
+function stageInfo(st){var b=base(byStage(st));if(state.method==="bologna")return b;
+  var av=[];for(var k=1;k<=CUR.per;k++){var a=semInfo((st-1)*CUR.per+k).avg;if(a!=null)av.push(a);}
+  b.avg=mean(av);return b;}
+function cumInfo(upto){var b=base(upTo(upto));if(state.method!=="courses")return b;
+  var av=[];for(var st=1;st<=upto;st++){var a=stageInfo(st).avg;if(a!=null)av.push(a);}
+  b.avg=mean(av);return b;}
+function badge(g){if(!g)return '<span class="blank">&nbsp;</span>';var c=BADGE[g];return '<span class="bd" style="color:'+c[0]+';background:'+c[1]+';border-color:'+c[0]+'">'+g+'</span>';}
+function esc(t){return String(t).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+function semTitle(st,k){return "الكورس "+ORD[k-1];}
+function heroHtml(){
+  var i=state.info,place=[i.uni,i.col,i.dep].map(function(x){return x.trim();}).filter(Boolean).map(esc).join(" · ");
+  var cur=state.mode==="default"?"منهاج 2023 - 2024 · بكالوريوس · "+CUR.total+" وحدة ("+CUR.semCount+" فصول)":"منهج مخصص · "+CUR.total+" وحدة ("+CUR.semCount+" فصول)";
+  var study=i.study?(i.study==="صباحي"?"الدراسة الصباحية":"الدراسة المسائية"):"";
+  return '<div class="hero">'+(place?'<div class="sm">'+place+'</div>':'')+'<h1>السجل الأكاديمي والتقديرات</h1><div class="nm">'+esc(i.name.trim()||"اسم الطالب")+'</div><div class="sm2">'+cur+(study?' · '+study:'')+' · '+MNAME[state.method]+'</div></div>';
+}
+function cover(){
+  var cum=cumInfo(CUR.stages),cnt={};
+  CUR.subs.forEach(function(s){var g=gradeOf(s.id);if(g)cnt[g]=(cnt[g]||0)+1;});
+  var mx=Math.max.apply(null,GR.map(function(g){return cnt[g]||0;}).concat([1]));
+  var bars="";
+  for(var sem=1;sem<=CUR.semCount;sem++){var a=semInfo(sem),h=a.avg?Math.round(a.avg*1.7):0,st=Math.ceil(sem/CUR.per);
+    bars+='<div class="bc"><div class="bv">'+(a.avg?f1(a.avg)+'%':'—')+'</div><div class="bar" style="height:'+h+'px;background:'+COL[st-1]+'"></div><div class="bl">ف'+sem+'</div></div>';}
+  var dist="";
+  GR.forEach(function(g){var n=cnt[g]||0;dist+='<div class="dr"><span class="dn">'+g+'</span><div class="dt"><div style="width:'+(n/mx*100)+'%;background:'+BADGE[g][0]+'"></div></div><b>'+n+'</b></div>';});
+  var rows="";
+  for(var s2=1;s2<=CUR.stages;s2++){var b=stageInfo(s2);
+    rows+='<tr><td><b style="color:'+COL[s2-1]+'">المرحلة '+STN[s2-1]+'</b></td><td>'+b.totalUnits+'</td><td>'+(b.avg!=null?f1(b.avg)+'%':'—')+'</td><td>'+(b.avg!=null?badge(letter(b.avg))+(b.n<b.total?' <span class="pend">(جزئي)</span>':''):'<span class="pend">قيد الدراسة</span>')+'</td></tr>';}
+  var pg=CUR.total?Math.min(100,cum.units/CUR.total*100):0;
+  return heroHtml()+
+  '<div class="kpis">'+
+  '<div class="kpi" style="border-color:#263238"><b>'+cum.units+'<small>/'+CUR.total+'</small></b><span>الوحدات المنجزة</span><div class="pg"><div style="width:'+pg+'%"></div></div></div>'+
+  '<div class="kpi" style="border-color:#0f9d58"><b>'+(cum.avg!=null?f1(cum.avg)+'%':'—')+'</b><span>المعدل التراكمي ('+MNAME[state.method]+')</span></div>'+
+  '<div class="kpi" style="border-color:#1a73e8"><b>'+(cum.avg!=null?letter(cum.avg):'—')+'</b><span>التقدير العام حتى الآن</span></div>'+
+  '<div class="kpi" style="border-color:#f29900"><b>'+cum.n+'</b><span>المواد المكتملة</span></div></div>'+
+  '<div class="row2"><div class="card"><h4>معدل كل فصل (%)</h4><div class="chart">'+bars+'</div></div><div class="card"><h4>توزيع التقديرات</h4>'+dist+'</div></div>'+
+  '<div class="card"><h4>ملخص المراحل</h4><table class="sum"><tr><th>المرحلة</th><th>الوحدات</th><th>المعدل السنوي</th><th>التقدير</th></tr>'+rows+'</table></div>'+
+  '<div class="note"><b>طريقة الحساب ('+MNAME[state.method]+'):</b> '+MHINT[state.method]+' إذا لم تُدخل درجة رقمية يُعتمد منتصف نطاق التقدير: امتياز 95 · جيد جداً 85 · جيد 75 · متوسط 65 · مقبول 55، لذلك الأرقام تقديرية. تفاصيل الحساب قد تختلف من جامعة لأخرى.</div>';
+}
+function tableHtml(st,sem){
+  var k=sem-(st-1)*CUR.per,c=COL[st-1],a=semInfo(sem),subs=bySem(sem);
+  var h='<div class="sh" style="border-right-color:'+c+'"><h3 style="color:'+c+'">'+semTitle(st,k)+' <small>(الفصل '+sem+')</small></h3><span class="sa">'+(a.avg!=null?'معدل الفصل: '+f1(a.avg)+'%'+(a.n<a.total?' (جزئي)':''):'قيد الدراسة')+'</span></div>';
+  h+='<table><tr style="background:'+c+'"><th class="n">ت</th><th>المادة</th><th class="u">الوحدات</th><th class="g">التقدير النهائي</th></tr>';
+  if(!subs.length)h+='<tr><td colspan="4" class="pend">لا توجد مواد في هذا الكورس</td></tr>';
+  subs.forEach(function(s,i){var g=gradeOf(s.id);
+    h+='<tr class="'+(i%2?'alt':'')+'"><td class="n">'+(i+1)+'</td><td class="m">'+esc(s.name)+'</td><td><b class="u">'+s.units+'</b></td><td>'+badge(g)+(g?'<button class="x" data-del="'+s.id+'" aria-label="حذف">✕</button>':'')+'</td></tr>';});
+  h+='<tr class="t" style="background:'+LIGHT[st-1]+'"><td></td><td class="m">مجموع الوحدات</td><td><b>'+a.totalUnits+'</b></td><td></td></tr></table>';
+  return h;
+}
+function stageParts(st){
+  var c=COL[st-1],a=stageInfo(st),cu=cumInfo(st),names=[];
+  for(var k=1;k<=CUR.per;k++)names.push(semTitle(st,k));
+  var head='<div class="ph" style="border-color:'+c+';background:'+LIGHT[st-1]+'"><div class="pn" style="background:'+c+'"><small>المرحلة</small><b>'+STN[st-1]+'</b></div><div class="pi"><div class="pt" style="color:'+c+'">'+names.join(" · ")+'</div><div class="chips"><span style="border-color:'+c+';color:'+c+'">'+a.totalUnits+' وحدة</span><span style="border-color:'+c+';color:'+c+'">'+a.total+' مادة</span><span style="border-color:'+c+';color:'+c+'">'+(a.avg!=null?'المعدل السنوي '+f1(a.avg)+'%':'قيد الدراسة')+'</span></div></div></div>';
+  var tables=[];for(var k2=1;k2<=CUR.per;k2++)tables.push(tableHtml(st,(st-1)*CUR.per+k2));
+  var fin;
+  if(a.avg!=null)fin='<div class="fin" style="border-color:'+c+';background:'+LIGHT[st-1]+'"><div><div class="fl">المعدل السنوي (التقدير النهائي للمرحلة)</div><div class="fs">المعدل التراكمي حتى نهاية هذه المرحلة: <b>'+f1(cu.avg)+'%</b> — '+letter(cu.avg)+(a.n<a.total?' · المرحلة جزئية ('+a.n+' من '+a.total+' مواد)':'')+'</div></div><div class="fv"><b style="color:'+c+'">'+f1(a.avg)+'%</b>'+badge(letter(a.avg))+'</div></div>';
+  else fin='<div class="fin" style="border-color:'+c+';background:'+LIGHT[st-1]+'"><div><div class="fl">المعدل السنوي (التقدير النهائي للمرحلة)</div><div class="fs">يُكتب بعد إكمال المرحلة</div></div><div class="fv"><i></i><span class="pc">%</span><i></i></div></div>';
+  return {head:head,tables:tables,fin:fin};
+}
+function pagesHtml(){var p=[cover()];for(var st=1;st<=CUR.stages;st++){var x=stageParts(st);p.push(x.head+x.tables.join("")+x.fin);}return p;}
+
+function renderReport(){
+  document.getElementById("report").innerHTML=pagesHtml().map(function(h){return '<section class="sheet">'+h+'</section>';}).join("");
+  fillSubjects();updateLive();
+}
+function fillSubjects(){
+  var sel=document.getElementById("sub"),cur=sel.value,h="";
+  if(!CUR.subs.length){sel.innerHTML='<option value="">أضف مواد للمنهج أولاً</option>';sel.disabled=true;return;}
+  sel.disabled=false;
+  for(var sem=1;sem<=CUR.semCount;sem++){var st=Math.ceil(sem/CUR.per),k=sem-(st-1)*CUR.per,l=bySem(sem);if(!l.length)continue;
+    h+='<optgroup label="المرحلة '+STN[st-1]+' · '+semTitle(st,k)+'">';
+    l.forEach(function(x){h+='<option value="'+x.id+'">'+(G()[x.id]?'✓ ':'○ ')+esc(x.name)+' · '+x.units+' وحدة</option>';});
+    h+='</optgroup>';}
+  sel.innerHTML=h;if(cur&&CUR.subs.some(function(s){return s.id===cur;}))sel.value=cur;
+}
+function updateLive(){
+  var el=document.getElementById("live");
+  var id=document.getElementById("sub").value,s=CUR.subs.filter(function(x){return x.id===id;})[0]||CUR.subs[0];
+  if(!s){el.innerHTML="";return;}
+  function v(x){return x.avg!=null?f1(x.avg)+'%':'—';}
+  el.innerHTML='<div><b>'+v(semInfo(s.sem))+'</b>معدل الفصل '+s.sem+'</div><div><b>'+v(stageInfo(s.st))+'</b>المعدل السنوي (م '+STN[s.st-1]+')</div><div><b>'+v(cumInfo(CUR.stages))+'</b>المعدل التراكمي</div>';
+}
+function say(t){document.getElementById("msg").textContent=t;}
+
+/* custom curriculum editor */
+function renderCust(){
+  var box=document.getElementById("custbox");
+  if(state.mode!=="custom"){box.hidden=true;box.innerHTML="";return;}
+  box.hidden=false;var c=state.cust;
+  var h='<h4>بناء المنهج المخصص</h4><div class="grid2"><div><label for="cst">عدد المراحل</label><select id="cst">';
+  for(var i=1;i<=6;i++)h+='<option value="'+i+'"'+(c.stages===i?' selected':'')+'>'+i+'</option>';
+  h+='</select></div><div><label for="cpr">عدد الكورسات (الفصول) في كل مرحلة</label><select id="cpr">';
+  for(var j=1;j<=3;j++)h+='<option value="'+j+'"'+(c.per===j?' selected':'')+'>'+j+'</option>';
+  h+='</select></div></div>';
+  for(var sem=1;sem<=c.stages*c.per;sem++){var st=Math.ceil(sem/c.per),k=sem-(st-1)*c.per;
+    h+='<div class="cgrp"><b>المرحلة '+STN[st-1]+' · '+semTitle(st,k)+'</b>';
+    c.subs.filter(function(s){return s.sem===sem;}).forEach(function(s){
+      h+='<div class="crow"><input class="cn" data-uid="'+s.uid+'" type="text" value="'+esc(s.name)+'" placeholder="اسم المادة"><input class="cu" data-uid="'+s.uid+'" type="number" min="0" step="0.5" inputmode="decimal" value="'+esc(s.units)+'" placeholder="الوحدات"><button class="x" data-cdel="'+s.uid+'" aria-label="حذف المادة">✕</button></div>';});
+    h+='<button class="btn alt sm" data-cadd="'+sem+'">+ إضافة مادة</button></div>';}
+  h+='<div class="hint">أدخل اسم كل مادة وعدد وحداتها. الحد الأقصى '+MAXSUB+' مادة لكل كورس حتى يتسع الجدول في صفحة الـPDF.</div>';
+  box.innerHTML=h;
+}
+function refreshAll(){build();renderReport();}
+document.getElementById("custbox").addEventListener("input",function(e){
+  var t=e.target,uid=parseInt(t.getAttribute("data-uid"),10);if(!uid)return;
+  var s=state.cust.subs.filter(function(x){return x.uid===uid;})[0];if(!s)return;
+  if(t.classList.contains("cn"))s.name=t.value;else if(t.classList.contains("cu"))s.units=t.value;
+  save();refreshAll();
+});
+document.getElementById("custbox").addEventListener("change",function(e){
+  if(e.target.id==="cst"){state.cust.stages=parseInt(e.target.value,10);save();renderCust();refreshAll();}
+  if(e.target.id==="cpr"){state.cust.per=parseInt(e.target.value,10);save();renderCust();refreshAll();}
+});
+document.getElementById("custbox").addEventListener("click",function(e){
+  var t=e.target,a=t.getAttribute&&t.getAttribute("data-cadd"),d=t.getAttribute&&t.getAttribute("data-cdel");
+  if(a){var sem=parseInt(a,10);if(state.cust.subs.filter(function(s){return s.sem===sem;}).length>=MAXSUB){say("وصلت للحد الأقصى من المواد في هذا الكورس.");return;}
+    state.cust.subs.push({uid:state.cust.next++,sem:sem,name:"",units:""});save();renderCust();refreshAll();}
+  if(d){var uid=parseInt(d,10);state.cust.subs=state.cust.subs.filter(function(s){return s.uid!==uid;});delete state.gc["c"+uid];save();renderCust();refreshAll();}
+});
+
+/* inputs */
+load();
+var I=state.info;
+["nm:name","uni:uni","col:col","dep:dep"].forEach(function(p){var a=p.split(":"),el=document.getElementById(a[0]);el.value=I[a[1]]||"";
+  el.addEventListener("input",function(e){state.info[a[1]]=e.target.value;save();renderReport();});});
+document.getElementById("study").value=I.study||"";
+document.getElementById("study").addEventListener("change",function(e){state.info.study=e.target.value;save();renderReport();});
+document.getElementById("mode").value=state.mode;
+document.getElementById("method").value=state.method;
+function setHint(){document.getElementById("mhint").textContent=MHINT[state.method];}
+document.getElementById("mode").addEventListener("change",function(e){state.mode=e.target.value;save();renderCust();refreshAll();say("");});
+document.getElementById("method").addEventListener("change",function(e){state.method=e.target.value;save();setHint();renderReport();});
+document.getElementById("sub").addEventListener("change",updateLive);
+document.getElementById("add").addEventListener("click",function(){
+  var id=document.getElementById("sub").value;if(!id){say("اختر مادة أولاً.");return;}
+  var g=document.getElementById("grd").value,nv=document.getElementById("num").value.trim(),entry;
+  if(nv!==""){var m=parseFloat(nv.replace(",","."));if(isNaN(m)||m<50||m>100){say("الدرجة الرقمية يجب أن تكون بين 50 و 100.");return;}entry={g:letter(m),m:m};}
+  else entry={g:g};
+  G()[id]=entry;save();document.getElementById("num").value="";
+  var next=CUR.subs.filter(function(s){return !G()[s.id];})[0];
+  renderReport();
+  if(next){document.getElementById("sub").value=next.id;updateLive();}
+  say("تم تسجيل التقدير.");
+});
+document.getElementById("clr").addEventListener("click",function(){if(state.mode==="default")state.gd={};else state.gc={};save();renderReport();say("تم مسح كل التقديرات.");});
+document.getElementById("report").addEventListener("click",function(e){var d=e.target.getAttribute&&e.target.getAttribute("data-del");if(d){delete G()[d];save();renderReport();}});
+
+document.getElementById("rstu").addEventListener("click",function(){
+  state.info={name:"",uni:"",col:"",dep:"",study:""};
+  ["nm","uni","col","dep","study"].forEach(function(id){document.getElementById(id).value="";});
+  save();renderReport();say("تم مسح بيانات الطالب.");
+});
+/* PDF */
+var dl=null;
+if(window.claude&&claude.use){claude.use("downloads").then(function(x){dl=x;}).catch(function(){});}
+function makePages(host){
+  var els=[];
+  function mk(h){var d=document.createElement("section");d.className="sheet pdfpage";d.innerHTML=h;host.appendChild(d);return d;}
+  els.push(mk(cover()));
+  for(var st=1;st<=CUR.stages;st++){
+    var p=stageParts(st),el=mk(p.head+p.tables.join("")+p.fin),fin=el.querySelector(".fin"),bottom=0;
+    var ts=el.querySelectorAll("table");for(var i=0;i<ts.length;i++)bottom=Math.max(bottom,ts[i].offsetTop+ts[i].offsetHeight);
+    if(fin&&bottom>fin.offsetTop-8){
+      host.removeChild(el);
+      p.tables.forEach(function(t,i2){els.push(mk((i2===0?p.head:"")+t+(i2===p.tables.length-1?p.fin:"")));});
+    }else els.push(el);
+  }
+  return els;
+}
+document.getElementById("pdf").addEventListener("click",function(){
+  var btn=this;
+  if(!window.html2canvas||!window.jspdf){say("تعذّر تحميل مكتبة الـPDF. يمكنك استخدام الطباعة من المتصفح.");try{window.print();}catch(e){}return;}
+  btn.disabled=true;say("جاري إنشاء الملف…");
+  var host=document.getElementById("host");host.innerHTML="";
+  var ready=(document.fonts&&document.fonts.ready)?document.fonts.ready:Promise.resolve();
+  ready.then(function(){
+    var els=makePages(host),jsPDF=window.jspdf.jsPDF,pdf=new jsPDF({unit:"mm",format:"a4",orientation:"portrait"}),chain=Promise.resolve();
+    els.forEach(function(el,i){
+      chain=chain.then(function(){return window.html2canvas(el,{scale:2,backgroundColor:"#ffffff",useCORS:true,width:794,height:1123,windowWidth:794});})
+        .then(function(cv){if(i>0)pdf.addPage();pdf.addImage(cv.toDataURL("image/jpeg",0.92),"JPEG",0,0,210,297);say("جاري إنشاء الملف… "+(i+1)+"/"+els.length);});
+    });
+    return chain.then(function(){return pdf.output("blob");});
+  }).then(function(blob){
+    host.innerHTML="";
+    if(dl){return dl.save({filename:"academic-record.pdf",data:blob}).then(function(){say("تم حفظ الملف.");}).catch(function(err){say(err&&err.code==="declined"?"تم إلغاء الحفظ.":"تعذّر الحفظ في هذا العرض. استخدم الطباعة (حفظ كـPDF) من المتصفح.");});}
+    try{var u=URL.createObjectURL(blob),a=document.createElement("a");a.href=u;a.download="academic-record.pdf";document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u);},4000);say("تم تنزيل الملف.");}catch(e){say("تعذّر التنزيل المباشر. استخدم الطباعة (حفظ كـPDF) من المتصفح.");try{window.print();}catch(e2){}}
+  }).catch(function(){host.innerHTML="";say("حدث خطأ أثناء إنشاء الملف.");}).then(function(){btn.disabled=false;});
+});
+setHint();renderCust();build();renderReport();
+})();
+</script>
+<script>
+(function(){
+'use strict';
+var COLORS={'امتياز':'#0f9d58','جيد جداً':'#1a73e8','جيد':'#00897b','متوسط':'#f29900','مقبول':'#d93025'};
+var openDD=null;
+function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e;}
+function fill(box,opt){
+  box.textContent='';
+  var t=opt?opt.textContent:'',mk=null,units=null,rng=null,col=opt?COLORS[opt.value]:null;
+  if(col){var d=el('i','o-dot');d.style.background=col;box.appendChild(d);}
+  if(t.charAt(1)===' '&&(t.charAt(0)==='✓'||t.charAt(0)==='○')){mk=t.charAt(0);t=t.slice(2);}
+  var k=t.lastIndexOf(' · ');
+  if(k>0&&t.slice(-5)===' وحدة'&&!isNaN(parseFloat(t.slice(k+3,-5)))){units=t.slice(k+3,-5);t=t.slice(0,k);}
+  var a=t.indexOf(' (');
+  if(col&&a>0&&t.slice(-1)===')'){rng=t.slice(a+2,-1);t=t.slice(0,a);}
+  if(mk)box.appendChild(el('span','o-mk '+(mk==='✓'?'done':'todo'),mk==='✓'?'✓':''));
+  box.appendChild(el('span','o-name',t));
+  if(rng)box.appendChild(el('span','o-pill rng',rng));
+  if(units)box.appendChild(el('span','o-pill',units+' وحدة'));
+}
+function enhance(sel){
+  if(sel.getAttribute('data-dd'))return;
+  sel.setAttribute('data-dd','1');
+  var NS='http://www.w3.org/2000/svg';
+  var w=el('div','dd'),btn=el('button','dd-btn'),lbl=el('span','dd-lbl'),panel=el('div','dd-panel'),items=[],idx=0;
+  btn.type='button';btn.setAttribute('aria-haspopup','listbox');btn.setAttribute('aria-expanded','false');
+  panel.setAttribute('role','listbox');panel.hidden=true;
+  var sv=document.createElementNS(NS,'svg'),pa=document.createElementNS(NS,'path');
+  sv.setAttribute('viewBox','0 0 14 9');sv.setAttribute('class','dd-chev');sv.setAttribute('aria-hidden','true');
+  pa.setAttribute('d','M1 1.5l6 6 6-6');pa.setAttribute('fill','none');pa.setAttribute('stroke','currentColor');pa.setAttribute('stroke-width','2');pa.setAttribute('stroke-linecap','round');pa.setAttribute('stroke-linejoin','round');
+  sv.appendChild(pa);btn.appendChild(lbl);btn.appendChild(sv);
+  sel.parentNode.insertBefore(w,sel);w.appendChild(sel);w.appendChild(btn);w.appendChild(panel);
+  sel.classList.add('dd-native');sel.tabIndex=-1;sel.setAttribute('aria-hidden','true');
+  var vd=Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype,'value');
+  Object.defineProperty(sel,'value',{configurable:true,get:function(){return vd.get.call(sel);},set:function(v){vd.set.call(sel,v);upd();}});
+  function upd(){fill(lbl,sel.options[sel.selectedIndex]||null);btn.disabled=sel.disabled;}
+  function build(){
+    panel.textContent='';items=[];
+    function add(o){
+      var b=el('div','dd-opt');b.setAttribute('role','option');
+      b.setAttribute('aria-selected',o.selected?'true':'false');
+      if(o.selected)b.className+=' sel';
+      fill(b,o);
+      b.addEventListener('click',function(){choose(o.index);});
+      panel.appendChild(b);items.push(b);
+    }
+    Array.prototype.forEach.call(sel.children,function(c){
+      if(c.tagName==='OPTGROUP'){panel.appendChild(el('div','dd-grp',c.label));Array.prototype.forEach.call(c.children,add);}
+      else add(c);
+    });
+  }
+  function mark(){
+    items.forEach(function(b,i){b.classList.toggle('act',i===idx);});
+    var b=items[idx];
+    if(b){if(b.offsetTop-36<panel.scrollTop)panel.scrollTop=b.offsetTop-36;else if(b.offsetTop+b.offsetHeight>panel.scrollTop+panel.clientHeight)panel.scrollTop=b.offsetTop+b.offsetHeight-panel.clientHeight+6;}
+  }
+  function close(){panel.hidden=true;w.classList.remove('open');btn.setAttribute('aria-expanded','false');if(openDD===api)openDD=null;}
+  var api={close:close,w:w};
+  function open(){
+    if(btn.disabled||!sel.options.length)return;
+    if(openDD&&openDD!==api)openDD.close();
+    build();panel.hidden=false;w.classList.add('open');btn.setAttribute('aria-expanded','true');
+    var r=btn.getBoundingClientRect(),below=window.innerHeight-r.bottom-12,above=r.top-12,up=below<220&&above>below;
+    w.classList.toggle('up',up);
+    panel.style.maxHeight=Math.max(160,Math.min(320,up?above:below))+'px';
+    var s=panel.querySelector('.sel');idx=s?items.indexOf(s):0;
+    items.forEach(function(b,i){b.classList.toggle('act',i===idx);});
+    if(s)panel.scrollTop=Math.max(0,s.offsetTop-panel.clientHeight/2+s.offsetHeight/2);
+    openDD=api;
+  }
+  function choose(i){
+    var changed=sel.selectedIndex!==i;
+    sel.selectedIndex=i;upd();close();btn.focus();
+    if(changed)sel.dispatchEvent(new Event('change',{bubbles:true}));
+  }
+  btn.addEventListener('click',function(){if(panel.hidden)open();else close();});
+  btn.addEventListener('keydown',function(e){
+    var k=e.key;
+    if(panel.hidden){if(k==='ArrowDown'||k==='ArrowUp'||k==='Enter'||k===' '){e.preventDefault();open();}return;}
+    if(k==='Escape'||k==='Tab'){close();return;}
+    if(k==='ArrowDown'){e.preventDefault();idx=Math.min(items.length-1,idx+1);mark();}
+    else if(k==='ArrowUp'){e.preventDefault();idx=Math.max(0,idx-1);mark();}
+    else if(k==='Home'){e.preventDefault();idx=0;mark();}
+    else if(k==='End'){e.preventDefault();idx=items.length-1;mark();}
+    else if(k==='Enter'||k===' '){e.preventDefault();if(items[idx])items[idx].click();}
+  });
+  btn.addEventListener('keyup',function(e){if(e.key===' ')e.preventDefault();});
+  sel.addEventListener('focus',function(){btn.focus();});
+  new MutationObserver(upd).observe(sel,{childList:true,subtree:true,attributes:true,attributeFilter:['disabled']});
+  upd();
+}
+function enhanceAll(root){Array.prototype.forEach.call(root.querySelectorAll('select:not([data-dd])'),enhance);}
+document.addEventListener('pointerdown',function(e){if(openDD&&!openDD.w.contains(e.target))openDD.close();});
+window.addEventListener('resize',function(){if(openDD)openDD.close();});
+enhanceAll(document);
+var cb=document.getElementById('custbox');
+new MutationObserver(function(){enhanceAll(cb);}).observe(cb,{childList:true});
+function fit(){var r=document.getElementById('report'),wr=document.querySelector('.wrap'),z=Math.min(1,(wr.clientWidth-24)/794);r.style.setProperty('--z',z);r.style.zoom=z<1?z:'';}
+fit();window.addEventListener('resize',fit);window.addEventListener('orientationchange',fit);
+})();
+</script>
+</body>
+</html>
